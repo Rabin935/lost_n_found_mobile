@@ -14,8 +14,7 @@ class BatchState extends Equatable {
     this.errorMessage,
   });
 
-  // copywith function
-  BatchState copywith({
+  BatchState copyWith({
     BatchStatus? status,
     List<BatchEntity>? batches,
     String? errorMessage,
@@ -23,7 +22,7 @@ class BatchState extends Equatable {
     return BatchState(
       status: status ?? this.status,
       batches: batches ?? this.batches,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: errorMessage,
     );
   }
 

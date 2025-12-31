@@ -8,14 +8,12 @@ abstract class Failure extends Equatable {
   List<Object?> get props => [message];
 }
 
-// Local Database Failure
 class LocalDatabaseFailure extends Failure {
   const LocalDatabaseFailure({
     String message = 'Local database operation failed',
   }) : super(message);
 }
 
-// API Dailure with status code
 class ApiFailure extends Failure {
   final int? statusCode;
 

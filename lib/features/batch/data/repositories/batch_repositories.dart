@@ -8,13 +8,13 @@ import 'package:lost_n_found/features/batch/domain/entities/batch_entity.dart';
 import 'package:lost_n_found/features/batch/domain/repositories/batch_repositories.dart';
 
 final batchRepositoryProvider = Provider<IBatchRepository>((ref) {
-  return BatchRepository(datasource: ref.read(batchLocalDatasourceProvider));
+  return BatchRepository(datasource: ref.read(batchLocalDataSourceProvider));
 });
 
 class BatchRepository implements IBatchRepository {
-  final IBatchDataSource _datasource;
+  final IBatchDatasource _datasource;
 
-  BatchRepository({required IBatchDataSource datasource})
+  BatchRepository({required IBatchDatasource datasource})
     : _datasource = datasource;
 
   @override

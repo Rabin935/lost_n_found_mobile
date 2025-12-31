@@ -3,16 +3,15 @@ import 'package:lost_n_found/core/services/hive/hive_service.dart';
 import 'package:lost_n_found/features/batch/data/datasources/batch_datasource.dart';
 import 'package:lost_n_found/features/batch/data/models/batch_hive_model.dart';
 
-final batchLocalDatasourceProvider = Provider<BatchLocalDatasource>((ref) {
+final batchLocalDataSourceProvider = Provider<BatchLocalDatasource>((ref) {
   return BatchLocalDatasource(hiveService: ref.read(hiveServiceProvider));
 });
 
-class BatchLocalDatasource implements IBatchDataSource {
-  // Dependency injection
+class BatchLocalDatasource implements IBatchDatasource {
   final HiveService _hiveService;
 
   BatchLocalDatasource({required HiveService hiveService})
-    : _hiveService = hiveService;
+    : _hiveService = hiveService; // dependent on Hive Service
 
   @override
   Future<bool> createBatch(BatchHiveModel batch) async {
@@ -27,7 +26,7 @@ class BatchLocalDatasource implements IBatchDataSource {
   @override
   Future<bool> deleteBatch(String batchId) async {
     try {
-      await _hiveService.deleteBatch(batchId);
+      await _hiveService.deletBatch(batchId);
       return true;
     } catch (e) {
       return false;
@@ -35,11 +34,11 @@ class BatchLocalDatasource implements IBatchDataSource {
   }
 
   @override
-  Future<List<BatchHiveModel>> getAllBatches() {
+  Future<List<BatchHiveModel>> getAllBatches() async {
     try {
       return _hiveService.getAllBatches();
     } catch (e) {
-      return Future.value([]);
+      return [];
     }
   }
 

@@ -7,6 +7,8 @@ import 'package:lost_n_found/core/services/hive/hive_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await HiveService().init();
+
   // Set system UI overlay style
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -16,8 +18,6 @@ void main() async {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
-
-  await HiveService().init();
 
   runApp(const ProviderScope(child: MyApp()));
 }
