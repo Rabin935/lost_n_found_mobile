@@ -22,12 +22,14 @@ class BatchHiveModel extends HiveObject {
 
   //Convert Model to Batch Entity
   BatchEntity toEntity() {
-    return BatchEntity(batchId: batchId, batchName: batchName, status: status);
+    return BatchEntity(batchId: batchId, batchName: 'KTM $batchName', status: status);
   }
 
   //Convert Batch Entity to Model
   factory BatchHiveModel.fromEntity(BatchEntity entity) {
     return BatchHiveModel(batchName: entity.batchName);
+    
+
   }
 
   //Convert List of Models to list of batch Entities

@@ -4,6 +4,10 @@ import 'package:lost_n_found/features/batch/domain/usecases/get_all_batch_usecas
 import 'package:lost_n_found/features/batch/domain/usecases/update_batch_usecase.dart';
 import 'package:lost_n_found/features/batch/presentation/state/batch_state.dart';
 
+final batchViewmodelProvider = NotifierProvider<BatchViewmodel, BatchState>(() {
+  return BatchViewmodel();
+});
+
 class BatchViewmodel extends Notifier<BatchState> {
   late final GetAllBatchUsecase _getAllBatchUsecase;
   late final UpdateBatchUsecase _updateBatchUsecase;
@@ -11,11 +15,19 @@ class BatchViewmodel extends Notifier<BatchState> {
   @override
   BatchState build() {
     // initialization
+
+    _getAllBatchUsecase = ref.read(getAllBatchUsecaseProvider);
+    _updateBatchUsecase = ref.read(updateBatchUsecaseProvider);
+    _createBatchUsecase = ref.read(createBatchUsecaseProvider);
     return BatchState();
   }
 
   Future<void> getAllBatches() async {
     state = state.copywith(status: BatchStatus.loading);
+
+    // wait 2 second
+    Future.delayed(Duration(seconds: 2), () {});
+
     final result = await _getAllBatchUsecase();
 
     result.fold(
@@ -52,6 +64,6 @@ class BatchViewmodel extends Notifier<BatchState> {
       },
     );
   }
-} 
+}
 
 // 29 min

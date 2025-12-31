@@ -1,7 +1,12 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:lost_n_found/core/constants/hive_table_constant.dart';
 import 'package:lost_n_found/features/batch/data/models/batch_hive_model.dart';
 import 'package:path_provider/path_provider.dart';
+
+final hiveServiceProvider = Provider<HiveService>((ref) {
+  return HiveService();
+});
 
 class HiveService {
   //Get batch box
@@ -15,7 +20,7 @@ class HiveService {
   }
 
   //Get all batches
-  Future<List<BatchHiveModel>> getAllBatches() async{
+  Future<List<BatchHiveModel>> getAllBatches() async {
     return _batchBox.values.toList();
   }
 
@@ -40,7 +45,25 @@ class HiveService {
     final path = '${directory.path}/${HiveTableConstant.dbName}';
     Hive.init(path);
     _registerAdapters();
-    await _openBoxes();
+    await openBoxes();
+    await insertDummybatches();
+  }
+
+  Future<void> insertDummybatches() async {
+    final box = Hive.box<BatchHiveModel>(HiveTableConstant.batchTable);
+    if (box.isNotEmpty) return;
+    
+    final dummyBatches = [
+      BatchHiveModel(batchName: '35-A'),
+      BatchHiveModel(batchName: '35-B'),
+      BatchHiveModel(batchName: '35-C'),
+      BatchHiveModel(batchName: '36-B'),
+      BatchHiveModel(batchName: '37-C'),
+    ];
+    for (var batch in dummyBatches) {
+      await box.put(batch.batchId, batch);
+    }
+    await box.close();
   }
 
   //Register all type adapters
@@ -51,7 +74,7 @@ class HiveService {
   }
 
   //Open all boxes
-  Future<void> _openBoxes() async {
+  Future<void> openBoxes() async {
     await Hive.openBox<BatchHiveModel>(HiveTableConstant.batchTable);
   }
 
